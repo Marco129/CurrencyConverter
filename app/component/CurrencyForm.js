@@ -15,15 +15,21 @@ class CurrencyForm extends React.Component {
     };
     this.handleAmountChange = this.handleAmountChange.bind(this);
     this.handleToChange = this.handleToChange.bind(this);
+    this.handleCurrencySwitch = this.handleCurrencySwitch.bind(this);
   }
   componentDidMount() {
     let $this = this;
     jQuery.getJSON(`https://api.fixer.io/latest?base=${this.state.from}`, function(data) {
       $this.setState({
-        to: Object.keys(data.rates)[0],
+        to: !$this.state.to ? Object.keys(data.rates)[0] : $this.state.to,
         rateData: data
       });
     });
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.from !== prevState.from) {
+      this.componentDidMount();
+    }
   }
   handleAmountChange(e) {
     if (!this.state.rateData) return;
@@ -36,6 +42,15 @@ class CurrencyForm extends React.Component {
       to: e.target.value.toUpperCase()
     });
   }
+  handleCurrencySwitch() {
+    if (!this.state.rateData) return;
+    let exist = this.state.from;
+    this.setState({
+      from: this.state.to,
+      to: exist,
+      rateData: undefined
+    });
+  }
   render() {
     let $this = this;
     let amountInputStyle = {
@@ -45,9 +60,9 @@ class CurrencyForm extends React.Component {
     return (
       <form>
         <input type="number" style={amountInputStyle} min="0" value={this.state.amount} onChange={this.handleAmountChange} /> {this.state.from}<br />
-        =<br />
+        = <input type="button" value="<->" onClick={this.handleCurrencySwitch} /><br />
         <input type="number" style={amountInputStyle} value={output} readOnly />
-        <select onChange={this.handleToChange}>
+        <select value={this.state.to} onChange={this.handleToChange}>
           {(function(option) {
             if (!$this.state.rateData) {
               option.push(<OptionItem key="0" />);
