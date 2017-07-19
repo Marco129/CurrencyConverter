@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'normalize.css';
 
 import CurrencyForm from './component/CurrencyForm';
 
 class App extends React.Component {
   render() {
     let style = {
-      width: '200px',
+      width: '220px',
       margin: '0 auto'
     };
     return (

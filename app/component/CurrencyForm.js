@@ -54,6 +54,7 @@ class CurrencyForm extends React.Component {
   render() {
     let $this = this;
     let amountInputStyle = {
+      margin: 3,
       width: '130px'
     };
     let exchangeRateBoxStyle = {
