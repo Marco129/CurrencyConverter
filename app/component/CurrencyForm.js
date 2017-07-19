@@ -56,6 +56,11 @@ class CurrencyForm extends React.Component {
     let amountInputStyle = {
       width: '130px'
     };
+    let exchangeRateBoxStyle = {
+      margin: 3,
+      padding: 3,
+      border: '1px solid #000'
+    };
     let output = !this.state.rateData ? 0 : this.state.amount * this.state.rateData.rates[this.state.to];
     return (
       <form>
@@ -74,6 +79,11 @@ class CurrencyForm extends React.Component {
             return option;
           })([])}
         </select>
+        {this.state.rateData &&
+          <div style={exchangeRateBoxStyle}>
+            1 {this.state.from} = {this.state.rateData.rates[this.state.to]} {this.state.to}
+          </div>
+        }
       </form>
     );
   }
